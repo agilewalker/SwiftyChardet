@@ -180,16 +180,16 @@ class HebrewProber: CharSetProber {
         // These probers are owned by the group prober.
     }
 
-    func set_model_probers(logicalProber: CharSetProber, _ visualProber: CharSetProber) {
+    func set_model_probers(_ logicalProber: CharSetProber, _ visualProber: CharSetProber) {
         self._logical_prober = logicalProber
         self._visual_prober = visualProber
     }
 
-    func is_final(c: UInt8) -> Bool {
+    func is_final(_ c: UInt8) -> Bool {
         return [self.FINAL_KAF, self.FINAL_MEM, self.FINAL_NUN, self.FINAL_PE, self.FINAL_TSADI].contains(c)
     }
 
-    func is_non_final(c: UInt8) -> Bool {
+    func is_non_final(_ c: UInt8) -> Bool {
         // The normal Tsadi is not a good Non-Final letter due to words like
         // "lechotet" (to chat) containing an apostrophe after the tsadi. This
         // apostrophe is converted to a space in FilterWithoutEnglishLetters
@@ -203,7 +203,7 @@ class HebrewProber: CharSetProber {
         return [self.NORMAL_KAF, self.NORMAL_MEM, self.NORMAL_NUN, self.NORMAL_PE].contains(c)
     }
 
-    override func feed(str: [UInt8]) -> ProbingState {
+    override func feed(_ str: Data) -> ProbingState {
         // Final letter analysis for logical-visual decision.
         // Look for evidence that the received buffer is either logical Hebrew
         // or visual Hebrew.

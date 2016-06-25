@@ -16,13 +16,13 @@ Usage
 -----
 ::
 
-    let data: NSData = ... // NSData with unknown encoding
-    let (encoding, confidence) =  SwiftyChardet.detect(data)
+    let data: Data = ... // a Data instance with unknown encoding
+    let (encoding: String, confidence: Double) =  SwiftyChardet.detect(data)
 
 ::
 
-    let data: NSData = ... // NSData with unknown encoding
-    let text = try? SwiftyChardet.decode(data)
+    let data: Data = ... // a Data instance with unknown encoding
+    let text: String? = try? SwiftyChardet.decode(data)
 
 Install
 -------

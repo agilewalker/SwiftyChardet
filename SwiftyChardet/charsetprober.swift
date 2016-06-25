@@ -54,7 +54,7 @@ class CharSetProber {
         self.lang_filter = langFilter
     }
 
-    func feed(str: [UInt8]) -> ProbingState {
+    func feed(_ str: Data) -> ProbingState {
         fatalError("feed() not implemented")
     }
 
@@ -62,10 +62,10 @@ class CharSetProber {
         self.state = .detecting
     }
 
-    static func filterHighByteOnly(aBuf: [UInt8]) -> [UInt8] {
-        return aBuf.map {
+    static func filterHighByteOnly(_ aBuf: Data) -> Data {
+        return Data(bytes: aBuf.map {
             return $0.isinternational() ? $0 : 0x20
-        }
+        })
     }
     
 /// We define three types of bytes:
@@ -79,10 +79,10 @@ class CharSetProber {
 /// are replaced by a single space ascii character.
 ///
 /// This filter applies to all scripts which do not use English characters.
-    static func filterInternationalWords(buf: [UInt8]) -> [UInt8] {
+    static func filterInternationalWords(_ buf: Data) -> Data {
 
 
-        var filtered: [UInt8] = []
+        var filtered = Data()
 
         // This regex expression filters out only words that have at-least one
         // international character. The word may include one marker character at
@@ -91,7 +91,7 @@ class CharSetProber {
         var end = 0
         var hasHighByte = false
         var prev: UInt8 = 0x20
-        for (i, c) in buf.enumerate() {
+        for (i, c) in buf.enumerated() {
             if c.isalpha() || c.isinternational() {
                 if prev.ismarker() {
                     start = i
@@ -107,8 +107,8 @@ class CharSetProber {
             if c.ismarker() && (prev.isalpha() || prev.isinternational()) {
                 end = i
                 if (end > start) && hasHighByte {
-                    filtered.appendContentsOf(buf[start ..< end])
-                    filtered.append(0x20)
+                    filtered.append(buf[start ..< end])
+                    filtered.append(byte: 0x20)
                 }
                 start = 0
                 end = 0
@@ -128,12 +128,12 @@ class CharSetProber {
 /// This filter can be applied to all scripts which contain both English
 /// characters and extended ASCII characters, but is currently only used by
 /// ``Latin1Prober``.
-    static func filterWithEnglishLetters(buf: [UInt8]) -> [UInt8] {
-        var filtered: [UInt8] = []
+    static func filterWithEnglishLetters(_ buf: Data) -> Data {
+        var filtered = Data()
         var in_tag: Bool = false
         var prev: Int = 0
 
-        for (curr, c) in buf.enumerate() {
+        for (curr, c) in buf.enumerated() {
             // Check if we're coming out of or entering an HTML tag
             if c == 0x3e {
                 in_tag = false
@@ -146,9 +146,9 @@ class CharSetProber {
                 // ...and we're not in a tag
                 if curr > prev && !in_tag {
                     // Keep everything after last non-extended-ASCII, non-alphabetic character
-                    filtered.appendContentsOf(buf[prev ..< curr])
+                    filtered.append(buf[prev ..< curr])
                     // Output a space to delimit stretch we kept
-                    filtered.append(0x20)
+                    filtered.append(byte: 0x20)
                 }
                 prev = curr + 1
             }
@@ -156,7 +156,7 @@ class CharSetProber {
         // If we're not in a tag...
         if !in_tag {
             // Keep everything after last non-extended-ASCII, non-alphabetic character
-            filtered.appendContentsOf(buf[prev ..< len(buf)])
+            filtered.append(buf[prev ..< len(buf)])
         }
         return filtered
     }

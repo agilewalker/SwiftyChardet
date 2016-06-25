@@ -70,7 +70,7 @@ class UniversalDetector {
         self.reset()
     }
 
-    func detectedHighByte(byte_str: [UInt8]) -> Bool {
+    func detectedHighByte(_ byte_str: Data) -> Bool {
         for byte in byte_str {
             if byte.isinternational() {
                 return true
@@ -79,8 +79,8 @@ class UniversalDetector {
         return false
     }
 
-    func detectedEscapedSequence(byte_str: [UInt8]) -> Bool {
-        for (c, byte) in byte_str.enumerate() {
+    func detectedEscapedSequence(_ byte_str: [UInt8]) -> Bool {
+        for (c, byte) in byte_str.enumerated() {
             if byte == 0x1B || (byte == 0x7B && c > 0 && byte_str[c - 1] == 0x7E) {
                 return true
             }
@@ -116,7 +116,7 @@ class UniversalDetector {
 /// - note:
 ///     You should always call ``close`` when you're done feeding in your
 ///     document if ``done`` is not already ``true``.
-    func feed(byte_str: [UInt8]) {
+    func feed(_ byte_str: Data) {
         if self.done {
             return
         }
@@ -126,14 +126,14 @@ class UniversalDetector {
         // First check for known BOMs, since these are guaranteed to be correct
         if !self._got_data {
             // If the data starts with BOM, we know it is UTF
-            if byte_str.startsWith([0xEF, 0xBB, 0xBF]) {
+            if byte_str.starts(with: [0xEF, 0xBB, 0xBF]) {
                 // EF BB BF  UTF-8 with BOM
                 self.result = (encoding: "UTF-8-SIG", confidence: 1.0)
-            } else if byte_str.startsWith([0xFF, 0xFE, 0x00, 0x00]) || byte_str.startsWith([0x00, 0x00, 0xFE, 0xFF]) {
+            } else if byte_str.starts(with: [0xFF, 0xFE, 0x00, 0x00]) || byte_str.starts(with: [0x00, 0x00, 0xFE, 0xFF]) {
                 // FF FE 00 00  UTF-32, little-endian BOM
                 // 00 00 FE FF  UTF-32, big-endian BOM
                 self.result = (encoding: "UTF-32", confidence: 1.0)
-            } else if byte_str.startsWith([0xFF, 0xFE]) || byte_str.startsWith([0xFE, 0xFF]) {
+            } else if byte_str.starts(with: [0xFF, 0xFE]) || byte_str.starts(with: [0xFE, 0xFF]) {
                 // FF FE  UTF-16, little endian BOM
                 // FE FF  UTF-16, big endian BOM
                 self.result = (encoding: "UTF-16", confidence: 1.0)
@@ -152,13 +152,13 @@ class UniversalDetector {
                 self._input_state = .high_byte
             } else {
                 var new_byte_str: [UInt8] = [self._last_char]
-                new_byte_str.appendContentsOf(byte_str)
+                new_byte_str.append(contentsOf: byte_str)
                 if self.detectedEscapedSequence(new_byte_str) {
                     self._input_state = .esc_ascii
                 }
             }
         }
-        self._last_char = byte_str[len(byte_str) - 1]
+        self._last_char = byte_str.last!
 
         // If we've seen escape sequences, use the EscCharSetProber, which
         // uses a simple state machine to check for known escape sequences in
@@ -200,9 +200,8 @@ class UniversalDetector {
 //    prediction.
 //    
 //    :returns:  The ``result`` attribute if a prediction was made.
-    func close() -> (encoding:String, confidence:Double) {
-
-        
+    @discardableResult
+    func close() -> (encoding:String, confidence:Double) {      
         if self.done {
             return self.result
         }

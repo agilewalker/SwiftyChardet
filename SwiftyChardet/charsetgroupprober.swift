@@ -61,7 +61,7 @@ class CharSetGroupProber: CharSetProber {
         return self._best_guess_prober.charsetName
     }
 
-    override func feed(str: [UInt8]) -> ProbingState {
+    override func feed(_ str: Data) -> ProbingState {
         for prober in self.probers {
             if !prober.active {
                 continue

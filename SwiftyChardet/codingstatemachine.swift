@@ -68,7 +68,7 @@ class CodingStateMachine {
         self._curr_state = .start
     }
 
-    func next_state(c: UInt8) -> MachineState {
+    func next_state(_ c: UInt8) -> MachineState {
         // for each byte we get its class
         // if it is first byte, we also get byte length
         let byte_class = self._model.class_table[c]

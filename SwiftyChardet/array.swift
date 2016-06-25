@@ -1,14 +1,14 @@
-func len<T>(collection: Array<T>) -> Int {
+func len<T>(_ collection: Array<T>) -> Int {
     return collection.count
 }
 
-extension CollectionType where Self.Index == Int {
-    subscript(position: UInt8) -> Self.Generator.Element {
+extension Collection where Self.Index == Int {
+    subscript(position: UInt8) -> Self.Iterator.Element {
         return self[Int(position)]
     }
 }
 
-extension Array: BooleanType {
+extension Array: Boolean {
     public var boolValue: Bool {
         return !self.isEmpty
     }

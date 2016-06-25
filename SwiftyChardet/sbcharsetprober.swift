@@ -64,7 +64,7 @@ class SingleByteCharSetProber: CharSetProber {
         self._name_prober = name_prober
 
         self._last_order = 255
-        self._seq_counters = [Int](count: self.NUMBER_OF_SEQ_CAT, repeatedValue: 0)
+        self._seq_counters = [Int](repeating: 0, count: self.NUMBER_OF_SEQ_CAT)
         self._total_seqs = 0
         self._total_char = 0
         self._freq_char = 0
@@ -76,7 +76,7 @@ class SingleByteCharSetProber: CharSetProber {
         super.reset()
         // char order of last character
         self._last_order = 255
-        self._seq_counters = [Int](count: self.NUMBER_OF_SEQ_CAT, repeatedValue: 0)
+        self._seq_counters = [Int](repeating: 0, count: self.NUMBER_OF_SEQ_CAT)
         self._total_seqs = 0
         self._total_char = 0
         // characters that fall in our sampling range
@@ -90,12 +90,12 @@ class SingleByteCharSetProber: CharSetProber {
         return name_prober.charsetName
     }
 
-    override func feed(str: [UInt8]) -> ProbingState {
+    override func feed(_ str: Data) -> ProbingState {
         var byte_str = str
         if !self._model.keep_english_letter {
             byte_str = CharSetProber.filterInternationalWords(byte_str)
         }
-        let num_bytes = len(byte_str)
+        let num_bytes = byte_str.count
         if num_bytes == 0 {
             return self.state
         }

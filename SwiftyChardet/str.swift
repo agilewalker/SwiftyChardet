@@ -1,20 +1,16 @@
 import Foundation
 
-public func len(x: String) -> Int {
+public func len(_ x: String) -> Int {
     return (x as NSString).length
 }
 
-extension String : BooleanType {
+extension String : Boolean {
     
     public var boolValue: Bool {
         return !self.isEmpty
     }
-    
-    func startswith(prefix: String) -> Bool {
-        return self.hasPrefix(prefix)
-    }
-    
+      
     subscript(r: Range<Int>) -> String {
-        return (self as NSString).substringWithRange(NSMakeRange(r.startIndex, r.endIndex - r.startIndex))
+        return (self as NSString).substring(with: NSMakeRange(r.lowerBound, r.upperBound - r.lowerBound))
     }
 }

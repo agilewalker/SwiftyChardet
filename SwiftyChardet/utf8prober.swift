@@ -49,7 +49,7 @@ class UTF8Prober: CharSetProber {
         return "UTF-8"
     }
 
-    override func feed(str: [UInt8]) -> ProbingState {
+    override func feed(_ str: Data) -> ProbingState {
         outer:
         for c in str {
             let coding_state = self.codingSM.next_state(c)

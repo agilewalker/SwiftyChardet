@@ -78,7 +78,7 @@ class EscCharSetProber: CharSetProber {
         }
     }
 
-    override func feed(str: [UInt8]) -> ProbingState {
+    override func feed(_ str: Data) -> ProbingState {
         for c in str {
             for codingSM in self.codingSM {
                 if !codingSM.active {

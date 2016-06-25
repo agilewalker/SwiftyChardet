@@ -47,6 +47,7 @@
 		947EBED51C3E591D0008C527 /* uint8.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947EBEAE1C3E591D0008C527 /* uint8.swift */; };
 		947EBED61C3E591D0008C527 /* universaldetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947EBEAF1C3E591D0008C527 /* universaldetector.swift */; };
 		947EBED71C3E591D0008C527 /* utf8prober.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947EBEB01C3E591D0008C527 /* utf8prober.swift */; };
+		948830101D1E39ED00C88010 /* data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9488300F1D1E39ED00C88010 /* data.swift */; };
 		949460A91C3E7B4200387963 /* chardet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949460A81C3E7B4200387963 /* chardet.swift */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +94,7 @@
 		947EBEAE1C3E591D0008C527 /* uint8.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = uint8.swift; sourceTree = "<group>"; };
 		947EBEAF1C3E591D0008C527 /* universaldetector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = universaldetector.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		947EBEB01C3E591D0008C527 /* utf8prober.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = utf8prober.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		9488300F1D1E39ED00C88010 /* data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = data.swift; sourceTree = "<group>"; };
 		949460A81C3E7B4200387963 /* chardet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = chardet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -150,6 +152,7 @@
 				947EBEAC1C3E591D0008C527 /* str.swift */,
 				947EBEAD1C3E591D0008C527 /* sum.swift */,
 				947EBEAE1C3E591D0008C527 /* uint8.swift */,
+				9488300F1D1E39ED00C88010 /* data.swift */,
 			);
 			name = utils;
 			sourceTree = "<group>";
@@ -290,12 +293,13 @@
 		947EBE761C3E58DB0008C527 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Wu Hui Yuan";
 				TargetAttributes = {
 					947EBE7E1C3E58DB0008C527 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = PM43J2DLQT;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -371,6 +375,7 @@
 				947EBEC01C3E591D0008C527 /* euctwprober.swift in Sources */,
 				947EBEB81C3E591D0008C527 /* cp949prober.swift in Sources */,
 				947EBECB1C3E591D0008C527 /* langturkishmodel.swift in Sources */,
+				948830101D1E39ED00C88010 /* data.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -481,6 +486,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -498,6 +504,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.github.agilewalker.SwiftyChardet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

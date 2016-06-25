@@ -5,7 +5,7 @@ enum InputState: Int {
     case high_byte = 2
 }
 
-struct LanguageFilter: OptionSetType {
+struct LanguageFilter: OptionSet {
     let rawValue: Int
     static let chinese_simplified = LanguageFilter(rawValue: 1 << 0)
     static let chinese_traditional = LanguageFilter(rawValue: 1 << 1)

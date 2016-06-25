@@ -63,8 +63,8 @@ class EUCJPProber: MultiByteCharSetProber {
         return max(context_conf, distrib_conf)
     }
 
-    override func feed(byte_str: [UInt8]) -> ProbingState {
-        outer: for (i, c) in byte_str.enumerate() {
+    override func feed(_ byte_str: Data) -> ProbingState {
+        outer: for (i, c) in byte_str.enumerated() {
             let coding_state = self.codingSM.next_state(c)
             switch (coding_state) {
             case .error:
@@ -80,15 +80,15 @@ class EUCJPProber: MultiByteCharSetProber {
                     self.contextAnalyzer.feed(self._last_char, char_len)
                     self.distributionAnalyzer.feed(self._last_char, char_len)
                 } else {
-                    self.contextAnalyzer.feed([UInt8](byte_str[(i - 1) ..< (i + 1)]), char_len)
-                    self.distributionAnalyzer.feed([UInt8](byte_str[(i - 1) ..< (i + 1)]), char_len)
+                    self.contextAnalyzer.feed(byte_str[(i - 1) ..< (i + 1)], char_len)
+                    self.distributionAnalyzer.feed(byte_str[(i - 1) ..< (i + 1)], char_len)
                 }
             default:
                 continue
             }
         }
 
-        self._last_char[0] = byte_str[len(byte_str) - 1]
+        self._last_char[0] = byte_str.last!
 
         if self.state == .detecting {
             if (self.contextAnalyzer.gotEnoughData &&

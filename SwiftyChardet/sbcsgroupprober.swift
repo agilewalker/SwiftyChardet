@@ -50,7 +50,7 @@ class SBCSGroupProber: CharSetGroupProber {
         let logical_hebrew_prober = SingleByteCharSetProber(Win1255HebrewModel, false, hebrew_prober)
         let visual_hebrew_prober = SingleByteCharSetProber(Win1255HebrewModel, true, hebrew_prober)
         hebrew_prober.set_model_probers(logical_hebrew_prober, visual_hebrew_prober)
-        self.probers.appendContentsOf([hebrew_prober, logical_hebrew_prober, visual_hebrew_prober])
+        self.probers.append(contentsOf: [hebrew_prober, logical_hebrew_prober, visual_hebrew_prober])
         self.reset()
     }
 }

@@ -67,7 +67,7 @@ class CharDistributionAnalysis {
         self._freq_chars = 0
     }
 
-    func feed(char: [UInt8], _ char_len: Int) {
+    func feed(_ char: Data, _ char_len: Int) {
         //"""feed a character with known length"""
         var order: Int
         if char_len == 2 {
@@ -110,7 +110,7 @@ class CharDistributionAnalysis {
         // For charset detection, certain amount of data is enough
         return self._total_chars > self.ENOUGH_DATA_THRESHOLD
     }
-    func getOrder(str: [UInt8]) -> Int {
+    func getOrder(_ str: Data) -> Int {
         // We do not handle characters based on the original encoding string,
         // but convert this encoding string to a number, here called order.
         // This allows multiple encodings of a language to share one frequency
@@ -127,7 +127,7 @@ class EUCTWDistributionAnalysis: CharDistributionAnalysis {
         self.typical_distribution_ratio = EUCTW_TYPICAL_DISTRIBUTION_RATIO
     }
 
-    override func getOrder(byte_str: [UInt8]) -> Int {
+    override func getOrder(_ byte_str: Data) -> Int {
         // for euc-TW encoding, we are interested
         //   first  byte range: 0xc4 -- 0xfe
         //   second byte range: 0xa1 -- 0xfe
@@ -150,7 +150,7 @@ class EUCKRDistributionAnalysis: CharDistributionAnalysis {
         self.typical_distribution_ratio = EUCKR_TYPICAL_DISTRIBUTION_RATIO
     }
 
-    override func getOrder(byte_str: [UInt8]) -> Int {
+    override func getOrder(_ byte_str: Data) -> Int {
         // for euc-KR encoding, we are interested
         //   first  byte range: 0xb0 -- 0xfe
         //   second byte range: 0xa1 -- 0xfe
@@ -173,7 +173,7 @@ class GB2312DistributionAnalysis: CharDistributionAnalysis {
         self.typical_distribution_ratio = GB2312_TYPICAL_DISTRIBUTION_RATIO
     }
 
-    override func getOrder(byte_str: [UInt8]) -> Int {
+    override func getOrder(_ byte_str: Data) -> Int {
         // for GB2312 encoding, we are interested
         //  first  byte range: 0xb0 -- 0xfe
         //  second byte range: 0xa1 -- 0xfe
@@ -195,7 +195,7 @@ class Big5DistributionAnalysis: CharDistributionAnalysis {
         self.typical_distribution_ratio = BIG5_TYPICAL_DISTRIBUTION_RATIO
     }
 
-    override func getOrder(byte_str: [UInt8]) -> Int {
+    override func getOrder(_ byte_str: Data) -> Int {
         // for big5 encoding, we are interested
         //   first  byte range: 0xa4 -- 0xfe
         //   second byte range: 0x40 -- 0x7e , 0xa1 -- 0xfe
@@ -221,7 +221,7 @@ class SJISDistributionAnalysis: CharDistributionAnalysis {
         self.typical_distribution_ratio = JIS_TYPICAL_DISTRIBUTION_RATIO
     }
 
-    override func getOrder(byte_str: [UInt8]) -> Int {
+    override func getOrder(_ byte_str: Data) -> Int {
         // for sjis encoding, we are interested
         //   first  byte range: 0x81 -- 0x9f , 0xe0 -- 0xfe
         //   second byte range: 0x40 -- 0x7e,  0x81 -- oxfe
@@ -253,7 +253,7 @@ class EUCJPDistributionAnalysis: CharDistributionAnalysis {
         self.typical_distribution_ratio = JIS_TYPICAL_DISTRIBUTION_RATIO
     }
 
-    override func getOrder(byte_str: [UInt8]) -> Int {
+    override func getOrder(_ byte_str: Data) -> Int {
         // for euc-JP encoding, we are interested
         //   first  byte range: 0xa0 -- 0xfe
         //   second byte range: 0xa1 -- 0xfe

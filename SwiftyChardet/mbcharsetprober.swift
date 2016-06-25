@@ -34,7 +34,7 @@ class MultiByteCharSetProber: CharSetProber {
     /*
     MultiByteCharSetProber
     */
-    var _last_char: [UInt8]
+    var _last_char: Data
 
     var codingSM: CodingStateMachine {
         fatalError("var codingSM getter not implemented")
@@ -45,7 +45,7 @@ class MultiByteCharSetProber: CharSetProber {
     }
 
     override init(langFilter: LanguageFilter = []) {
-        self._last_char = [0, 0]
+        self._last_char = Data(bytes: [0, 0])
         super.init(langFilter: langFilter)
     }
 
@@ -53,12 +53,12 @@ class MultiByteCharSetProber: CharSetProber {
         super.reset()
         self.codingSM.reset()
         self.distributionAnalyzer.reset()
-        self._last_char = [0, 0]
+        self._last_char = Data(bytes: [0, 0])
     }
 
-    override func feed(byte_str: [UInt8]) -> ProbingState {
+    override func feed(_ byte_str: Data) -> ProbingState {
         outer:
-        for (i, c) in byte_str.enumerate() {
+        for (i, c) in byte_str.enumerated() {
             let coding_state = self.codingSM.next_state(c)
             switch (coding_state) {
             case .error:
@@ -73,13 +73,13 @@ class MultiByteCharSetProber: CharSetProber {
                     self._last_char[1] = byte_str[0]
                     self.distributionAnalyzer.feed(self._last_char, char_len)
                 } else {
-                    self.distributionAnalyzer.feed([UInt8](byte_str[i - 1 ..< i + 1]), char_len)
+                    self.distributionAnalyzer.feed(byte_str[i - 1 ..< i + 1], char_len)
                 }
             default:
                 continue
             }
         }
-        self._last_char[0] = byte_str[len(byte_str) - 1]
+        self._last_char[0] = byte_str.last!
 
         if self.state == .detecting {
             if (self.distributionAnalyzer.gotEnoughData && (self.confidence > self.SHORTCUT_THRESHOLD)) {

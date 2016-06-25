@@ -12,11 +12,11 @@ protocol Summable {
     func +(lhs: Self, rhs: Self) -> Self
 }
 
-extension SequenceType where Generator.Element:Summable {
+extension Sequence where Iterator.Element:Summable {
 
     /// Return sum of all values in the sequence
-    func sum() -> Generator.Element {
-        return self.reduce(Generator.Element.Zero, combine: +)
+    func sum() -> Iterator.Element {
+        return self.reduce(Iterator.Element.Zero, combine: +)
     }
 }
 

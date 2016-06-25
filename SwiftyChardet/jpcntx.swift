@@ -131,7 +131,7 @@ class JapaneseContextAnalysis {
     init() {
         self._total_rel = 0  // total sequence received
         // category counters, each integer counts sequence in its category
-        self._rel_sample = [Int](count: self.NUM_OF_CATEGORY, repeatedValue: 0)
+        self._rel_sample = [Int](repeating: 0, count: self.NUM_OF_CATEGORY)
         // if last byte in current buffer is not the last byte of a character,
         // we need to know how many bytes to skip in next buffer
         self._need_to_skip_char_num = 0
@@ -145,7 +145,7 @@ class JapaneseContextAnalysis {
     func reset() {
         self._total_rel = 0  // total sequence received
         // category counters, each integer counts sequence in its category
-        self._rel_sample = [Int](count: self.NUM_OF_CATEGORY, repeatedValue: 0)
+        self._rel_sample = [Int](repeating: 0, count: self.NUM_OF_CATEGORY)
         // if last byte in current buffer is not the last byte of a character,
         // we need to know how many bytes to skip in next buffer
         self._need_to_skip_char_num = 0
@@ -155,7 +155,7 @@ class JapaneseContextAnalysis {
         self._done = false
     }
 
-    func feed(byte_str: [UInt8], _ num_bytes: Int) {
+    func feed(_ byte_str: Data, _ num_bytes: Int) {
         if self._done {
             return
         }
@@ -168,7 +168,7 @@ class JapaneseContextAnalysis {
         // this character will simply our logic and improve performance.
         var i = self._need_to_skip_char_num
         while i < num_bytes {
-            let (order, char_len) = self.getOrder([UInt8](byte_str[i ..< min(len(byte_str), i + 2)]))
+            let (order, char_len) = self.getOrder(byte_str[i ..< min(len(byte_str), i + 2)])
             i += char_len
             if i > num_bytes {
                 self._need_to_skip_char_num = i - num_bytes
@@ -204,7 +204,7 @@ class JapaneseContextAnalysis {
         }
     }
 
-    func getOrder(byte_str: [UInt8]) -> (Int, Int) {
+    func getOrder(_ byte_str: Data) -> (Int, Int) {
         return (-1, 1)
     }
 }
@@ -220,7 +220,7 @@ class SJISContextAnalysis: JapaneseContextAnalysis {
         return self._charset_name
     }
 
-    override func getOrder(byte_str: [UInt8]) -> (Int, Int) {
+    override func getOrder(_ byte_str: Data) -> (Int, Int) {
         if !byte_str {
             return (-1, 1)
         }
@@ -247,7 +247,7 @@ class SJISContextAnalysis: JapaneseContextAnalysis {
 }
 
 class EUCJPContextAnalysis: JapaneseContextAnalysis {
-    func get_order(byte_str: [UInt8]) -> (Int, Int) {
+    func get_order(_ byte_str: Data) -> (Int, Int) {
         if !byte_str {
             return (-1, 1)
         }

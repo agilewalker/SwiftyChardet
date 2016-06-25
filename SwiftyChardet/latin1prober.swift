@@ -103,14 +103,14 @@ class Latin1Prober: CharSetProber {
 
     override func reset() {
         self._mLastCharClass = OTH
-        self._mFreqCounter = [Int](count: FREQ_CAT_NUM, repeatedValue: 0)
+        self._mFreqCounter = [Int](repeating: 0, count: FREQ_CAT_NUM)
     }
 
     override var charsetName: String {
         return "windows-1252"
     }
 
-    override func feed(str: [UInt8]) -> ProbingState {
+    override func feed(_ str: Data) -> ProbingState {
         let _str = CharSetProber.filterWithEnglishLetters(str)
         for c in _str {
             let charClass = Latin1CharToClass[c]
