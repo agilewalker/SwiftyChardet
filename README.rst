@@ -29,3 +29,7 @@ Install
 ::
 
    pod install SwiftyChardet
+
+Swift 2
+-------
+For projects depends on Swift 2,  Stick to 1.x branch
